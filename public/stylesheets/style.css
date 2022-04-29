@@ -1,0 +1,305 @@
+body {
+    background-color: #222;
+    color: white;
+}
+
+#newTransForm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+}
+#newTransForm.show {
+    opacity: 1;
+    pointer-events: all;
+    transition: .25s;
+}
+.formBack {
+    position: absolute;
+    background-color: #00000050;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+#newTransForm form {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.confirmDelete {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #555;
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 1rem;
+    overflow-y: scroll;
+}
+.panel::-webkit-scrollbar {
+    display: none;
+  }
+
+.panel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.btn {
+    background-color: #555;
+    padding: .25rem .75rem;
+    border-radius: 4px;
+    border: 1px solid white;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+    outline: none;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.btn:hover {
+    text-decoration: none;
+    color: white;
+    background: #222;
+    transition: .25s;
+}
+.btn:focus {
+    box-shadow: none;
+}
+.btn-toLink {
+    width: 100%;
+}
+.btn-submit {
+    background-color: rgb(9, 77, 9);
+}
+.btn-caution {
+    background-color: rgb(99, 10, 10);
+}
+.btn-logout {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    left: 2rem;
+}
+
+.formClose {
+    position: absolute;
+    background: none;
+    border: none;
+    top: .5rem;
+    right: .5rem;
+    font-size: 12pt;
+    padding: .3rem .55rem .3rem .6rem;
+}
+
+.formItem {
+    margin: 8px 0;
+}
+
+.error {
+    border-color: red !important;
+}
+
+.formText {
+    width: 100%;
+    margin-top: 2px;
+    background-color: rgb(167, 167, 167);
+    border: 1px solid white;
+    border-radius: 2px;
+    padding: .3rem;
+    color: rgb(46, 46, 46);
+    transition: .25s;
+}
+.formText:focus {
+    box-shadow: none;
+    outline: none;
+    background-color: rgb(226, 226, 226);
+    color: black;
+    transition: .25s;
+}
+.formTextArea {
+    width: 100%;
+    min-height: 45px;
+}
+
+.subtext {
+    font-size: 8pt;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    max-width: 320px;
+    height: 18px;
+}
+
+.transaction-link {
+    font-size: 12pt;
+    cursor: pointer;
+}
+.transaction-link:hover {
+    text-decoration: underline;
+}
+
+#myAlert {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    transition: .25s;
+}
+#myAlert.show {
+    opacity: 1;
+    pointer-events: all;
+    transition: .25s;
+}
+#myAlertBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000050;
+}
+#myAlertContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    bottom: 0;
+    background-color: #333;
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 1rem;
+}
+.detailsTitle {
+    font-size: 13pt;
+}
+
+.smallText {
+    font-size: 8pt;
+    opacity: .75;
+    margin: 0;
+}
+
+.detailsImageCont {
+    position: relative;
+    display: block;
+    width: 25%;
+    height: 130px;
+    padding: 0;
+    margin: .75rem;
+    border-radius: 4px;
+    border: 1px solid white;
+    overflow: hidden;
+    cursor: pointer;
+}
+.detailsImageCont::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #00000000;
+    transition: .25s;
+    z-index: 9;
+}
+.detailsImageCont:hover::before {
+    background-color: #00000075;
+    transition: .25s;
+}
+.detailsImageCont::after {
+    content: "View Image";
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
+    z-index: 10;
+    opacity: 0;
+    transition: .25s;
+}
+.detailsImageCont:hover::after {
+    opacity: 1;
+    transition: .25s;
+}
+
+.detailsImage {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+@media screen and (min-width: 720px) {
+    .btn-toLink {
+        background: none;
+        border: none;
+        height: unset;
+        width: unset;
+        text-align: center;
+        padding: unset;
+        margin: 0;
+    }
+    #myAlertContent {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 45vw;
+        max-width: 90vw;
+        max-height: 90vh;
+        width: unset;
+        bottom: unset;
+    }
+    #newTransForm form {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 80vh;
+    }
+    .panel {
+        box-shadow: 0 0 4px black;
+        height: unset;
+        width: unset;
+        transform: translate(-50%, -50%);
+        max-width: 90vw;
+        max-height: 90vh;
+        min-width: 30vw;
+    }
+    .btn-logout {
+        left: unset;
+    }
+    .confirmDelete {
+        position: unset;
+        top: unset;
+        left: unset;
+        transform: unset;
+    }
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

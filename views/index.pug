@@ -1,0 +1,81 @@
+extends layout
+
+block content
+    template#formTemplate
+        form(class='panel' onsubmit='validateForm(event, this)')
+            a(href='#' class='btn btn-caution formClose' onclick='toggleTransForm(event)') X
+            h3 New Transaction
+            hr
+            div(class='formItem')
+                label(for='payee') Date:
+                input(class='field formText' name='date' type='date')
+            div(class='formItem')
+                label(for='payee') Payee:
+                input(class='field formText' name='payee' type='text' placeholder='i.e. Home Depot')
+            div(class='formItem')
+                label(for='amount') Amount:
+                input(class='field formText' type='text' name='amount' placeholder='0.00')
+            div(class='formItem')
+                label(for='source') Source:
+                input(class='field formText' name='source' type='text' placeholder="i.e. NJ's AA Card.")
+            div(class='formItem')
+                label(for='checkNumber') Check Number:
+                input(class='field formText' name='checkNumber' type='text' placeholder="If Applicable")
+            div(class='formItem')
+                label(for='notes') Notes:
+                textarea(class='field formText formTextArea' name='notes')
+            div(class='form-item')
+                label(class='w-100')
+                    div(class='row justify-content-start')
+                        div(class='col-12 col-md-5')
+                            a(class='btn w-100') Add Image(s)
+                    input(class='field d-none error' type='file' name='images' multiple onchange='checkImages(this)')
+                div(class='subtext')
+                    p No image(s) selected.
+
+
+            div(class='row mt-4 justify-content-end')
+                div(class='col-12 col-md-3')
+                    button(class='btn btn-submit w-100') Save
+
+    template#detailsTemplate
+        div
+            h4 Transaction Details:
+            hr 
+            p(class='smallText') Date
+            h5(class='detailsTitle') Payee
+            p(class='header') $20.25
+            p Source
+            p CheckNumber
+            p Notes
+            hr
+            div(class='row position-relative')
+            div(class='row justify-content-end')
+                div(class='col-12 col-md-6 text-end')
+                    a(href="#" class='btn btn-caution my-3 w-100') Delete
+            p(class='smallText')
+
+    aside#newTransForm(class='')
+        div(class='formBack' onclick='toggleTransForm(event)')
+        
+    main(class='container mt-4')
+        div(class='row justify-content-center')
+            div(class='col-12 col-md-8')
+                h1(class='text-center') Transactions
+                hr
+                div(class='row justify-content-end')
+                    div(class='text-end col-12 col-md-4')
+                        a(class='btn w-100' href="#" onclick='toggleTransForm(event)') Add Transaction
+                div#transactions(class='mt-4')
+                    hr(class='d-md-none')
+                    for trans in transactions
+                        div(id=trans._id)
+                            hr(class='d-none d-md-block')
+                            p(class='smallText')= new Date(trans.date).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
+                            h4(class='transaction-link btn btn-toLink' onclick=`showDetails("${trans._id}")`)= `${trans.payee} - $${trans.amount}`
+                
+    
+    section()
+        a(class='btn btn-caution btn-logout' href="#" onclick='logout(event)') Log Out
+
+        
