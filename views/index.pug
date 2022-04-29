@@ -36,24 +36,30 @@ block content
 
             div(class='row mt-4 justify-content-end')
                 div(class='col-12 col-md-3')
-                    button(class='btn btn-submit w-100') Save
+                    button#saveButton(class='btn btn-submit w-100') Save
 
     template#detailsTemplate
         div
             h4 Transaction Details:
-            hr 
-            p(class='smallText') Date
-            h5(class='detailsTitle') Payee
-            p(class='header') $20.25
-            p Source
-            p CheckNumber
-            p Notes
+            hr
+            p(class='bef bef-date') Date
+            p(class='bef bef-payee') Payee
+            p(class='bef bef-amount') $20.25
+            p(class='bef bef-source') Source
+            p(class='bef bef-check') CheckNumber
+            p(class='bef bef-notes') Notes
             hr
             div(class='row position-relative')
             div(class='row justify-content-end')
                 div(class='col-12 col-md-6 text-end')
                     a(href="#" class='btn btn-caution my-3 w-100') Delete
             p(class='smallText')
+
+    template#transTemplate
+        div
+            hr(class='d-none d-md-block')
+            p(class='smallText')
+            h4(class='transaction-link btn btn-toLink')
 
     aside#newTransForm(class='')
         div(class='formBack' onclick='toggleTransForm(event)')
@@ -66,15 +72,18 @@ block content
                 div(class='row justify-content-end')
                     div(class='text-end col-12 col-md-4')
                         a(class='btn w-100' href="#" onclick='toggleTransForm(event)') Add Transaction
-                div#transactions(class='mt-4')
+                div(class='mt-4')
                     hr(class='d-md-none')
-                    for trans in transactions
-                        div(id=trans._id)
-                            hr(class='d-none d-md-block')
-                            p(class='smallText')= new Date(trans.date).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
-                            h4(class='transaction-link btn btn-toLink' onclick=`showDetails("${trans._id}")`)= `${trans.payee} - $${trans.amount}`
-                
-    
+                    div#transactions
+                        for trans in transactions
+                            div(id=trans._id)
+                                hr(class='d-none d-md-block')
+                                p(class='smallText')= new Date(trans.date).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
+                                h4(class='transaction-link btn btn-toLink' onclick=`showDetails("${trans._id}")`)= `${trans.payee} - $${trans.amount}`
+                    hr
+                div(class='row justify-content-center mt-5')
+                    div(class='col-12 col-md-8')
+                        button(class='btn w-100' onclick='fetchTrans(this, 10)') Fetch More Transactions
     section()
         a(class='btn btn-caution btn-logout' href="#" onclick='logout(event)') Log Out
 

@@ -68,4 +68,25 @@ router.post('/delete/:id', authUser(), async (req, res) => {
     
 })
 
+router.get('/fetch', authUser(), async (req, res) => {
+    try {
+        const currCount = parseInt(req.query.current)
+        const count = parseInt(req.query.get) + currCount
+
+        const transactions = await req.findMany('johnsonProperty', 'finances', {delete: false})
+        transactions.sort((a, b) => { return a.date > b.date ? -1 : a.date < b.date ? 1 : 0 });
+
+        let resp = {
+            ok: true,
+            resp: transactions.slice(currCount, count),
+        }
+        transactions.length <= count ? resp.limit = true : null
+
+        res.json(resp)
+    } catch(err) {
+        res.json({ok: false, resp: err.message})
+    }
+    
+})
+
 module.exports = router

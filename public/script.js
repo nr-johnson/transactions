@@ -89,6 +89,8 @@ async function logout(event) {
 }
 
 async function submitForm(form) {
+    let but = document.getElementById('saveButton')
+    but.classList.add('loading')
     let data = new FormData(form)
     let submit = await TTS('POST', '/api/add', data)
     let resp = JSON.parse(submit)
@@ -96,9 +98,49 @@ async function submitForm(form) {
         myAlert('Transaction Uploaded!')
         toggleTransForm(null)
         window.setTimeout(() => closeMyAlert(null), 3000)
+        setTimeout(() => window.location.reload(), 2000)
     } else {
         myAlert(`Error:<br>${resp.resp}`)
     }
+    but.classList.remove('loading')
+}
+
+async function fetchTrans(but, count) {
+    but.classList.add('loading')
+    try {
+        let parent = document.getElementById('transactions')
+        const transactions = await TTS('GET', `/api/fetch?current=${parent.children.length}&get=${count}`)
+        const data = JSON.parse(transactions)
+        
+        if(data.ok) {
+            for(let index in data.resp) {
+                let trans = data.resp[index]
+                let template = document.getElementById('transTemplate')
+                const nodes = template.content.cloneNode(true);
+                let content = nodes.children[0]
+    
+                content.id = trans._id
+    
+                content.children[1].innerHTML = new Date(trans.date).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
+                content.children[2].setAttribute('onclick', `showDetails("${trans._id}")`)
+                content.children[2].innerHTML = `${trans.payee} - $${trans.amount}`
+    
+                parent.appendChild(content)
+            }
+    
+            if(data.limit) {
+                but.classList.add('disabled')
+                but.innerHTML = 'End of Transactions'
+            }
+        } else {
+            myAlert(data.resp)
+        }
+        
+
+    } catch(err) {
+        myAlert(err.message)
+    }
+    but.classList.remove('loading')
 }
 
 function deleteTransaction(id) {
@@ -158,15 +200,24 @@ async function showDetails(id) {
     let content = nodes.children[0]
 
     content.children[2].innerHTML = new Date(data.date).toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
-    content.children[3].innerHTML = `Payee: ${data.payee}`
+    content.children[3].innerHTML = data.payee
     content.children[4].innerHTML = `$${data.amount}`
     content.children[5].innerHTML = data.source
+
     if(data.checkNumber != "" && data.checkNumber.toLowerCase() != 'na') {
-        content.children[6].innerHTML = `Check #: ${data.checkNumber}`
+        content.children[6].innerHTML = data.checkNumber
     } else {
         content.children[6].innerHTML = ""
+        content.children[6].classList.add('d-none')
     }
-    content.children[7].innerHTML = `Notes:<br>${data.notes}`
+
+    if(data.notes != "") {
+        content.children[7].innerHTML = data.notes
+    } else {
+        content.children[7].innerHTML = ""
+        content.children[7].classList.add('d-none')        
+    }
+    
 
     for(let index in data.images) {
         const image = data.images[index]

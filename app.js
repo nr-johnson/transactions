@@ -44,7 +44,7 @@ app.get('/', authUser(), async (req, res) => {
     const transactions = await req.findMany('johnsonProperty', 'finances', {delete: false})
     transactions.sort((a, b) => { return a.date > b.date ? -1 : a.date < b.date ? 1 : 0 });
     res.render('index', {
-      transactions: transactions
+      transactions: transactions.slice(0, 10)
     })
 })
 
