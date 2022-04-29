@@ -5,8 +5,8 @@ const cloudinary = require('cloudinary')
 const express = require('express')
 const path = require('path');
 const { authUser } = require('./functions/authorize')
-const session = require('express-session')
 const bodyParser = require('body-parser')
+const session = require('express-session')
 const ops = require('./functions/ops')
 let MongoStore = require('connect-mongo');
 
@@ -21,8 +21,8 @@ const app = express()
 const apiRoute = require('./routes/apiRoutes')
 const loginRoute = require('./routes/login')
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ limit: '50mb', parameterLimit: 50000, extended: true }));
 
 app.use(connectMongo(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true}))
 app.use(ops.dataOps(), ops.fileOps())

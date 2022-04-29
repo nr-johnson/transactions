@@ -21,7 +21,7 @@ body {
 }
 .formBack {
     position: absolute;
-    background-color: #00000050;
+    background-color: #00000075;
     top: 0;
     left: 0;
     bottom: 0;
@@ -176,7 +176,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #00000050;
+    background-color: #00000075;
 }
 #myAlertContent {
     position: absolute;
