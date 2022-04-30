@@ -15,6 +15,7 @@ router.post('/add', authUser(), async (req, res) => {
             fields.images = []
             fields.delete = false
             if(files.images.filepath) {
+                console.log('Single Image')
                 if(files.images.size > 0) {
                     const image = await req.uploadFile(files.images.filepath, {public_id: `property/transactions/${id}/${files.images.originalFilename}`})
                     fields.images.push({
@@ -23,7 +24,8 @@ router.post('/add', authUser(), async (req, res) => {
                         public_id: image.public_id
                     })
                 }
-            } else if(fields.images[0]) {
+            } else if(files.images[0]) {
+                console.log('Multiple Image')
                 for(let index in files.images) {
                     const image = await req.uploadFile(files.images[index].filepath, {public_id: `property/transactions/${id}/${files.images[index].originalFilename}`})
                     fields.images.push({
