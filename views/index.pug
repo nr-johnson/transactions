@@ -1,5 +1,8 @@
 extends layout
 
+block head
+    title Transactions
+
 block content
     template#formTemplate
         form(class='panel' onsubmit='validateForm(event, this)')
@@ -51,8 +54,9 @@ block content
             hr
             div(class='row position-relative')
             div(class='row justify-content-end')
-                div(class='col-12 col-md-6 text-end')
-                    a(href="#" class='btn btn-caution my-3 w-100') Delete
+                div(class='trash-btn me-3 text-end')
+                    a(href="#" class='btn btn-caution w-100 h-100' title='Delete Transaction')
+                        img(src='/images/trash.svg')
             p(class='smallText')
 
     template#transTemplate
@@ -62,7 +66,7 @@ block content
             h4(class='transaction-link btn btn-toLink')
 
     aside#newTransForm(class='')
-        div(class='formBack' onclick='toggleTransForm(event)')
+        div(class='formBack')
         
     main(class='container mt-4')
         div(class='row justify-content-center')
@@ -82,9 +86,12 @@ block content
                                 h4(class='transaction-link btn btn-toLink' onclick=`showDetails("${trans._id}")`)= `${trans.payee} - $${trans.amount}`
                     hr
                 div(class='row justify-content-center mt-5')
-                    div(class='col-12 col-md-8')
+                    div(class='col-12 col-md-6')
                         button(class='btn w-100' onclick='fetchTrans(this, 10)') Fetch More Transactions
-    section()
-        a(class='btn btn-caution btn-logout' href="#" onclick='logout(event)') Log Out
+        
+        section(class='row justify-content-end mt-md-5')
+            div(class='col-12 col-md-3')
+                hr(class='d-md-none')
+                a(class='btn btn-caution btn-logout w-100' href="#" onclick='logout(event)') Log Out
 
         

@@ -51,11 +51,11 @@ function checkImages(input) {
     for(i = 0; i < input.files.length; i++) {
         const file = input.files[i]
         const extension = file.name.split('.')[1]
-        if(extension != 'jpg' && extension != 'jpeg' && extension != 'png') {
+        if(extension != 'jpg' && extension != 'jpeg' && extension != 'png' && extension != 'pdf') {
             input.parentNode.children[0].classList.add('error')
             input.value = null
             text.innerHTML = 'No image(s) selected.'
-            alert('Images must be jpegs or pngs.')
+            alert(`Image format must be jpeg, png or pdf. Instead got $`)
             break
         }
         if(file.size > 2000000) {
@@ -95,7 +95,7 @@ async function submitForm(form) {
     let submit = await TTS('POST', '/api/add', data)
     let resp = JSON.parse(submit)
     if(resp.ok){
-        myAlert('Transaction Uploaded!')
+        myAlert('Transaction Uploaded!', 'form')
         toggleTransForm(null)
         window.setTimeout(() => closeMyAlert(null), 3000)
         setTimeout(() => window.location.reload(), 2000)
@@ -143,14 +143,15 @@ async function fetchTrans(but, count) {
     but.classList.remove('loading')
 }
 
-function deleteTransaction(id) {
+function deleteTransaction(event, id) {
+    event.preventDefault()
     const mainDiv = document.createElement('div')
 
     const div = document.createElement('div')
     div.classList = 'col-8 mx-auto justify-content-center text-center my-3 confirmDelete'
     
     const btn = document.createElement('a')
-    btn.setAttribute('onclick', `confirmDelete("${id}")`)
+    btn.setAttribute('onclick', `confirmDelete(this, "${id}")`)
     btn.classList = "btn btn-caution mt-3 col-12 col-md-6"
     btn.innerHTML = "Confirm"
     
@@ -162,11 +163,13 @@ function deleteTransaction(id) {
     myAlert(mainDiv.innerHTML)
 }
 
-async function confirmDelete(id) {
+async function confirmDelete(button, id) {
+    closeMyAlert(null, button.parentNode.parentNode.parentNode.parentNode)
     await TTS('POST', `/api/delete/${id}`)
     const trans = document.getElementById(id)
     trans.parentNode.removeChild(trans)
     myAlert('Transaction Deleted')
+    setTimeout(() => closeMyAlert(null, null, true), 2000)
 }
 
 function TTS(method, route, data) {
@@ -221,20 +224,32 @@ async function showDetails(id) {
 
     for(let index in data.images) {
         const image = data.images[index]
+        const extension = image.url.substring(image.url.length - 3, image.url.length)
 
         let cont = document.createElement('a')
+        cont.title = 'Open in New Tab'
+        cont.innerHTML = '<img class="thumb-link-away" src="/images/external-link.svg">'
         cont.classList = 'detailsImageCont'
-        cont.href = image.url
         cont.setAttribute('target', '_blank')
+        
+        cont.href = image.url
 
         let node = document.createElement('img')
-        node.src = image.url
         node.classList = 'detailsImage'
-
+        
+        if(extension != 'pdf') {
+            node.src = image.url
+        } else {
+            node.src = '/images/pdf.svg'
+            node.style.objectFit = 'contain'
+            node.style.padding = '.5rem'
+            cont.classList.add('pdf')
+        }
         cont.append(node)
+        
         content.children[9].appendChild(cont)
     }
-    content.children[10].children[0].children[0].setAttribute('onclick', `deleteTransaction("${data._id}")`)
+    content.children[10].children[0].children[0].setAttribute('onclick', `deleteTransaction(event, "${data._id}")`)
     content.children[11].innerHTML = `ID: ${data._id}`
 
 
@@ -242,18 +257,31 @@ async function showDetails(id) {
 
 }
 
-function myAlert(content) {
-    const box = document.getElementById('myAlert')
-    const container = document.getElementById('myAlertContent')
+function myAlert(content, id) {
+    const template = document.getElementById('myAlert')
+    const alerts = document.getElementById('alerts')
+    const nodes = template.content.cloneNode(true);
+    const box = nodes.children[0]
+
+    const container = box.children[1]
     
     container.children[1].innerHTML = content
-    box.classList.add('show')
-}
-function closeMyAlert(event) {
-    if(event) event.preventDefault()
-    const box = document.getElementById('myAlert')
-    const container = document.getElementById('myAlertContent')
 
-    setTimeout(() => container.children[1].innerHTML = '', 250)
-    box.classList.remove('show')
+    id ? box.id = id : null
+
+    alerts.appendChild(box)
+
+    box.classList.add('myAlert')
+}
+function closeMyAlert(event, box, all) {
+    if(event) event.preventDefault()
+    const alerts = document.getElementById('alerts')
+
+    if(all) {
+        alerts.innerHTML = ''
+    } else {
+        box.classList.remove('show')
+        box.remove()
+    }
+    
 }

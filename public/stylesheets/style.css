@@ -1,6 +1,18 @@
 body {
     background-color: #222;
     color: white;
+    margin-bottom: 60px;
+}
+
+template {
+    display: none;
+}
+
+a {
+    color: white;
+}
+a:hover {
+    color: #ffffff95;
 }
 
 #newTransForm {
@@ -19,6 +31,13 @@ body {
     pointer-events: all;
     transition: .25s;
 }
+#newTransForm .panel {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    transform: unset;
+}
 .formBack {
     position: absolute;
     background-color: #00000075;
@@ -33,18 +52,15 @@ body {
     left: 0;
 }
 .confirmDelete {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
 }
 
 .panel {
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 75vw;
     background-color: #555;
     border: 1px solid white;
     border-radius: 4px;
@@ -53,7 +69,7 @@ body {
 }
 .panel::-webkit-scrollbar {
     display: none;
-  }
+}
 
 .panel {
     -ms-overflow-style: none;
@@ -68,10 +84,10 @@ body {
     border: 1px solid white;
     color: #ffffff;
     text-decoration: none;
-    transition: .25s;
     outline: none;
     white-space: nowrap;
     overflow: hidden;
+    text-align: center;
 }
 .btn:hover {
     text-decoration: none;
@@ -91,16 +107,22 @@ body {
 .btn-caution {
     background-color: rgb(99, 10, 10);
 }
-.btn-logout {
-    position: fixed;
-    right: 2rem;
-    bottom: 2rem;
-    left: 2rem;
+.trash-btn {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+}
+.trash-btn a {
+    padding: 0;
+}
+.trash-btn img {
+    margin: 1px 0 0 1px;
 }
 .btn.loading {
     color: #ffffff00;
     background-color: #444;
-    transition: .25;
 }
 .btn.loading::before {
     content: "";
@@ -191,36 +213,32 @@ body {
     text-decoration: underline;
 }
 
+#alerts {
+    z-index: 1;
+}
+
 #myAlert {
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10;
-    transition: .25s;
-}
-#myAlert.show {
-    opacity: 1;
-    pointer-events: all;
-    transition: .25s;
+    z-index: 20;
 }
 #myAlertBack {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #00000075;
+    background-color: #00000095;
 }
 #myAlertContent {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    bottom: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85vw;
     background-color: #333;
     border: 1px solid white;
     border-radius: 4px;
@@ -305,6 +323,9 @@ body {
     opacity: 0;
     transition: .25s;
 }
+.detailsImageCont.pdf::after {
+    content: "View PDF";
+}
 .detailsImageCont:hover::after {
     opacity: 1;
     transition: .25s;
@@ -316,6 +337,13 @@ body {
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+.thumb-link-away {
+    position: absolute;
+    bottom: .5rem;
+    right: .5rem;
+    z-index: 1;
+    filter: drop-shadow(0 0 2px black);
 }
 
 @media screen and (min-width: 720px) {
@@ -338,24 +366,24 @@ body {
         width: unset;
         bottom: unset;
     }
-    #newTransForm form {
+    #newTransForm .panel {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         min-height: 80vh;
     }
+    /* #newTransForm form {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 80vh;
+    } */
     .panel {
         box-shadow: 0 0 4px black;
-        height: unset;
-        width: unset;
         transform: translate(-50%, -50%);
         max-width: 90vw;
         max-height: 90vh;
         min-width: 30vw;
-    }
-    .panel.login {
-        bottom: unset;
-        right: unset;
     }
     .btn-logout {
         left: unset;

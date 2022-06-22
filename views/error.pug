@@ -1,0 +1,18 @@
+extends layout
+
+block head
+    title= `Error | ${error.status}`
+    style.
+        
+
+block content
+    main(class='container p-5')
+        section
+            a(href='/') Return
+            hr
+            h1 Oops...
+                br
+                = error.message
+            hr
+            h2= error.status
+            pre #{error.stack}

@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const createError = require('http-errors')
 const connectMongo = require('./functions/connectMongo')
 const cloudinary = require('cloudinary')
 const express = require('express')
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', authUser(), async (req, res) => {
     const transactions = await req.findMany('johnsonProperty', 'finances', {delete: false})
+    transactions.reverse()
     transactions.sort((a, b) => { return a.date > b.date ? -1 : a.date < b.date ? 1 : 0 });
     res.render('index', {
       transactions: transactions.slice(0, 10)
@@ -59,3 +61,14 @@ app.set('port', PORT)
 const server = http.createServer(app)
 
 server.listen(PORT, () => console.log(`Running on Port ${PORT}`))
+
+
+app.use((req, res, next) => {
+  next(createError(404))
+})
+
+app.use((err, req, res, next) => {
+  err.url = req.protocol + '://' + req.get('host') + req.originalUrl
+
+  res.status(err.status || 500).render('error', {error: err})
+})

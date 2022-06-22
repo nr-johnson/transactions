@@ -5,14 +5,18 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
         link(rel='stylesheet' href='/stylesheets/style.css')
-        title Transactions
+        block head
     body
-        div#myAlert(class='')
-            div#myAlertBack(onclick='closeMyAlert()')
-            div#myAlertContent
-                a(href='#' class='btn btn-caution formClose' onclick='closeMyAlert(event)') X
-                div
+        template#myAlert
+            div
+                div#myAlertBack(onclick='closeMyAlert(event, this.parentNode)')
+                div#myAlertContent
+                    a(href='#' class='btn btn-caution formClose' onclick='closeMyAlert(event, this.parentNode.parentNode)') X
+                    div
+        
 
         block content
 
+        div#alerts
+        
         script(src="/script.js")

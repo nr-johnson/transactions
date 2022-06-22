@@ -6,7 +6,6 @@ function authUser() {
             console.log('No user found. Redirecting...')
             res.redirect('/login')
         } else {
-            console.log('User authorized.')
             next()
         }
     }
